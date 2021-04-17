@@ -14,20 +14,20 @@ db = make_database()
 
 def get_question(num):
     cur = db.cursor()
-    cur.execute("SELECT * FROM questions WHERE id = ?", (num,))
+    cur.execute("SELECT text FROM questions WHERE id = ?", (num,))
     data = cur.fetchone()
     cur.close()
-    
-    return data
+
+    return data[0]
 
 
 def get_answers(num):
     cur = db.cursor()
-    cur.execute("SELECT * FROM answers WHERE id = ?", (num,))
+    cur.execute("SELECT text FROM answers WHERE id = ?", (num,))
     data = cur.fetchall()
     cur.close()
-    
-    return data
+
+    return data[0]
 
 
 def new_quiz(name):
@@ -35,7 +35,7 @@ def new_quiz(name):
     cur.execute("INSERT INTO quizzes(name) VALUES (?)", (name,));
     quiz_id = cur.lastrowid
     cur.close()
-    
+
     return quiz_id
 
 
@@ -44,7 +44,7 @@ def new_question(quiz_id, question):
     cur.execute("INSERT INTO questions(quiz_id, text) VALUES (?, ?)", (quiz_id, question,))
     question_id = cur.lastrowid
     cur.close()
-    
+
     return question_id
 
 
@@ -53,7 +53,7 @@ def new_answer(question_id, answer):
     cur.execute("INSERT INTO answers(question_id, text) VALUES (?, ?)", (question_id, answer,))
     answer_id = cur.lastrowid
     cur.close()
-    
+
     return answer_id
 
 if __name__ == "__main__":
