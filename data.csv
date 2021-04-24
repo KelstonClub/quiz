@@ -1,11 +1,11 @@
-quiz,Random Quiz
-question,1,What is 2+2?,multiple choice
-question,1,What is the capital of Germany?,multiple choice
-answer,1,-4,false
-answer,1,3,false
-answer,1,9,false
-answer,1,4,true
-answer,2,Utah,false
-answer,2,London,false
-answer,2,Barcelona,false
-answer,2,Berlin,true
+quizzes,Random Quiz
+questions,1,What is 2+2?,multiple choice
+questions,1,What is the capital of Germany?,multiple choice
+answers,1,-4,False
+answers,1,3,False
+answers,1,9,False
+answers,1,4,True
+answers,2,Utah,False
+answers,2,London,False
+answers,2,Barcelona,False
+answers,2,Berlin,True

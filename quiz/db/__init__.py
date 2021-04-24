@@ -7,54 +7,56 @@ def make_db(db_name="quizzes.db", schema="db.sql"):
     cur = conn.cursor()
     with open(schema, "r") as f:
         cur.executescript(f.read())
+    cur.close()
 
     return conn
 
-def query(db, q, ret=None, args=tuple()):
+def query(db, q, ret=None, *args):
     cur = db.cursor()
+    if args and isinstance(args[0], list):
+        args = args[0]
+    
     cur.execute(q, args)
+    rval = None
+    
+    if ret == "insert":
+        rval = cur.lastrowid
 
-    if not ret:
-        return
+    elif ret == "fetch_one":
+        rval = cur.fetchone()
 
-    if ret == 'insert':
-        return cur.lastrowid
-
-    if ret == 'fetch_one':
-        return cur.fetchone()
-
-    if ret == 'fetch_all':
-        return cur.fetchall()
-
-    else:
-        raise ValueError('Invalid query return type.')
+    elif ret == "fetch_all":
+        rval = cur.fetchall()
+        
+    cur.close()
+    return rval
 
 
-def get_all_quizes(db):
+def get_all_quizzes(db):
     return query(db, "SELECT id,name FROM quizzes", "fetch_all")
 
 
-def get_quiz_questions(db, quiz_id):
-    return query(db, "SELECT id FROM questions WHERE quiz_id = ?", "fetch_all", (quiz_id,))
+def get_quiz_questions(db, args):
+    return query(db, "SELECT id FROM questions WHERE quiz_id = ?", "fetch_all", args)
 
 
-def get_question(db, num):
-    return query(db, "SELECT text FROM questions WHERE id = ?", "fetch_one", (num,))
+def get_question(db, args):
+    return query(db, "SELECT text FROM questions WHERE id = ?", "fetch_one", args)
 
 
-def get_answers(db, num):
-    return query(db, "SELECT text, is_right  FROM answers WHERE id = ?", "fetch_all", (num,))
+def get_answers(db, args):
+    return query(db, "SELECT text, is_right  FROM answers WHERE id = ?", "fetch_all", args)
 
 
-def new_quiz(db, name):
-    return query(db, "INSERT INTO quizzes(name) VALUES (?)", "insert", (name,))
+def new_quiz(db, args):
+    return query(db, "INSERT INTO quizzes(name) VALUES (?)", "insert", args)
 
 
-def new_question(db, quiz_id, question, _type):
-    return query(db, "INSERT INTO questions(quiz_id, text, type) VALUES (?, ?, ?)", "insert", (quiz_id, question, _type))
+def new_question(db, args):
+    return query(db, "INSERT INTO questions(quiz_id, text, type) VALUES (?, ?, ?)", "insert", args)
 
 
-def new_answer(db, question_id, answer, is_right):
-    return query(db, "INSERT INTO answers(question_id, text, is_right) VALUES (?, ?, ?)", "insert", (question_id, answer, is_right))
+def new_answer(db, args):
+    return query(db, "INSERT INTO answers(question_id, text, is_right) VALUES (?, ?, ?)", "insert", args)
 
 

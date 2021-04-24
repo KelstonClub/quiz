@@ -9,7 +9,7 @@ HERE = os.path.dirname(__file__)
 @app.route("/")
 def choose_quiz():
     connenction = db.make_db()
-    return render_template("choose_quiz.html", quizes=db.get_all_quizes(connenction))
+    return render_template("choose_quiz.html", quizzes=db.get_all_quizzes(connenction))
 
 def display_question(questionid, id):
     connenction = db.make_db()
