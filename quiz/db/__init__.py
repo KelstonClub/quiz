@@ -8,14 +8,11 @@ def make_db(db_name="quizzes.db", schema="db.sql"):
     with open(schema, "r") as f:
         cur.executescript(f.read())
 
-    cur.close()
-
     return conn
 
 def query(db, q, ret=None, args=tuple()):
     cur = db.cursor()
     cur.execute(q, args)
-    cur.close()
 
     if not ret:
         return

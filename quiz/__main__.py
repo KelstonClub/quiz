@@ -6,13 +6,10 @@ app = Flask(__name__)
 
 HERE = os.path.dirname(__file__)
 
-#~ db = {
-    #~ "Capital Cities" : {1:"What is the capital city of Enlgand", 2:"What is the captial city of India"}
-#~ }
-
 @app.route("/")
 def choose_quiz():
-    return render_template("choose_quiz.html", quizes=db.get_all_quizes())
+    connenction = db.make_db()
+    return render_template("choose_quiz.html", quizes=db.get_all_quizes(connenction))
 
 @app.route("/quiz/<id>/<questionid>")
 def show_questions(id, questionid):
