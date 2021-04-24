@@ -36,7 +36,7 @@ def query(q, ret=None, args=tuple()):
 
 
 def get_all_quizes():
-    return query("SELECT name FROM quizzes", "fetch_all")
+    return query("SELECT id,name FROM quizzes", "fetch_all")
 
 
 def get_quiz_questions(quiz_id):
