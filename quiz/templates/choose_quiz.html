@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>Choose quiz</title>
+    </head>
+    <body>
+        <h1>These are quizes:</h1>
+        <ul>
+        {% for id, quiz in quizes %}
+            <li><a href="{{ url_for('show_questions', id) }}">{{ quiz }}</a></li>
+        {% endfor %}
+    </ul>
+    </body>
+</html>
