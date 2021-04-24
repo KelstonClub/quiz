@@ -39,11 +39,11 @@ def get_quiz_questions(db, quiz_id):
 
 
 def get_question(db, num):
-    return query(db, "SELECT text FROM questions WHERE id = ?", "fetchone", (num,))
+    return query(db, "SELECT text FROM questions WHERE id = ?", "fetch_one", (num,))
 
 
 def get_answers(db, num):
-    return query(db, "SELECT text, is_right  FROM answers WHERE id = ?", "fetchall", (num,))
+    return query(db, "SELECT text, is_right  FROM answers WHERE id = ?", "fetch_all", (num,))
 
 
 def new_quiz(db, name):

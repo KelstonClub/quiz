@@ -3,11 +3,11 @@
         <title>Choose quiz</title>
     </head>
     <body>
-        <h1>These are quizes:</h1>
+        <h1>These are the quizes:</h1>
         <ul>
         {% for id, quiz in quizes %}
-            <li><a href="{{ url_for('show_questions', id=id, questionid=1) }}">{{ quiz }}</a></li>
+            <li><a href="{{ url_for('show_questions', id=id) }}">{{ quiz }}</a></li>
         {% endfor %}
-    </ul>
+        </ul>
     </body>
 </html>
