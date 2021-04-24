@@ -26,4 +26,4 @@ if __name__ == "__main__":
             else:
                 raise ValueError(f"Invalid type={line[0]} for inseting to database.")
     
-    print("Finished inseting data.")
+    print("Finished inserting data.")
