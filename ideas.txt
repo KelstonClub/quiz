@@ -1,0 +1,29 @@
+UI
+* Web
+* Pygame/Gui
+* Text
+* App / Kivy
+* Bluetooth
+
+Questions
+* Multiple-Choice
+* Text - arithmetic / maths questions
+* Text - questionmaster
+* Multimedia - graphics / sound
+* Quickfire
+
+Scoring
+* 1 point per answer
+* Kahoot-style scoring
+* Bonus-style points
+
+Rounds
+* Fixed number of questions
+* Last-man standing 
+* Quickfire
+* Gets harder; less time
+
+Features
+* High Score
+* Networking 
+* Multiplayer
