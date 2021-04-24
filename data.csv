@@ -1,0 +1,11 @@
+quiz,What is 2+2?
+question,What is 2+2?,multiple choice
+question,What is the capital of Germany?,multiple choice
+answer,1,-4
+answer,1,3
+answer,1,9
+answer,1,4
+answer,2,Utah
+answer,2,London
+answer,2,Barcelona
+answer,2,Berlin
