@@ -5,8 +5,8 @@
     <body>
         <h1>These are the quizzes:</h1>
         <ul>
-        {% for id, quiz in quizzes %}
-            <li><a href="{{ url_for('show_questions', id=id) }}">{{ quiz }}</a></li>
+        {% for qid, quiz in quizzes %}
+            <li><a href="{{ url_for('show_questions', qid=qid) }}">{{ quiz }}</a></li>
         {% endfor %}
         </ul>
     </body>

@@ -13,8 +13,10 @@ def make_db(db_name="quizzes.db", schema="db.sql"):
 
 def query(db, q, ret=None, *args):
     cur = db.cursor()
-    if args and isinstance(args[0], list):
-        args = args[0]
+    # print(f"About to run: `{q=}` with `{args=}`")
+    if args:
+        if isinstance(args[0], list) or isinstance(args[0], tuple):
+            args = args[0]
     
     cur.execute(q, args)
     rval = None
@@ -41,11 +43,11 @@ def get_quiz_questions(db, args):
 
 
 def get_question(db, args):
-    return query(db, "SELECT text FROM questions WHERE id = ?", "fetch_one", args)
+    return query(db, "SELECT text, type FROM questions WHERE id = ?", "fetch_one", args)
 
 
 def get_answers(db, args):
-    return query(db, "SELECT text, is_right  FROM answers WHERE id = ?", "fetch_all", args)
+    return query(db, "SELECT text, is_right  FROM answers WHERE question_id = ?", "fetch_all", args)
 
 
 def new_quiz(db, args):

@@ -1,16 +1,23 @@
 <html>
-    <head>
-        <title>Questions</title>
-    </head>
-    <body>
-        <h1>{{ question }}</h1>
+<head>
+	<title>Questions</title>
+	<style>
+	h1, input { margin-left: 5%; }
+	</style>
+</head>
+<body>
+	<h1>{{ question[0] }}</h1>
         <ul>
-        
-        <form>
-            {% for answer in answers %}
-              <input type="radio" value={{ answer }}>
-              <label>{{ answer }}</label><br>
-            {% endfor %}
+        <form action="" method="POST">
+	{% if question[1] == "multiple choice" %}
+	{% for answer, _ in answers %}
+	<button name="answer" type="submit" value="{{ answer }}">{{ answer }}</button>
+	{% endfor %}
+	{% else %}
+		<input type="text" label="Type your answer here">
+		<input type="submit" value="Submit">
+	{% endif %}
+		<br>
         </form>
         </ul>
     </body>
