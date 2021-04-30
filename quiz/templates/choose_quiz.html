@@ -1,19 +1,10 @@
-<html>
-    <style>
-        html{
-            font-family: Arial;
-            background-color: #c7f0e8;
-        }
-    </style>
-    <head>
-        <title>Choose quiz</title>
-    </head>
-    <body>
-        <h1>These are the quizzes:</h1>
-        <ul>
-        {% for qid, quiz in quizzes %}
-            <li><a href="{{ url_for('show_questions', qid=qid) }}">{{ quiz }}</a></li>
-        {% endfor %}
-        </ul>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title %}Choose quiz{% endblock %}
+{% block content %}
+<h1>These are the quizzes:</h1>
+<ul>
+{% for qid, quiz in quizzes %}
+        <li><a href="{{ url_for('show_questions', qid=qid) }}">{{ quiz }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

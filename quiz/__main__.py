@@ -51,7 +51,7 @@ def show_questions(qid):
             answers = db.get_answers(conn, quiestion_id)
             session["answer"] = [ans for ans in answers if ans[1] == "True"][0]
         
-            return render_template("quiz_questions.html", question=question, answers=answers)
+            return render_template("question.html", question=question, answers=answers)
     else:
         correct = request.form.get("answer") == session["answer"][0]
         if correct:
@@ -74,7 +74,7 @@ def show_score(qid):
     wrong = session["quiz_len"] - right
     score = 5*right - wrong # Score is 5 points per right answer minus the wrong ones.
     session.clear() # Clear session so user can do another quiz.
-    return render_template("quiz_score.html", score=score)
+    return render_template("score.html", score=score)
 
 
 if __name__ == '__main__':

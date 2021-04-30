@@ -1,0 +1,17 @@
+{% extends "base.html" %}	
+{% block title %}Questions{% endblock %}
+{% block content %}
+<h1>{{ question[0] }}</h1>
+<ul>
+<form action="" method="POST">
+{% if question[1] == "multiple choice" %}
+{% for answer, _ in answers %}
+	<button name="answer" type="submit" value="{{ answer }}">{{ answer }}</button>
+{% endfor %}
+{% else %}
+	<input type="text" label="Type your answer here">
+	<input type="submit" value="Submit">
+{% endif %}
+</form>
+</ul>
+{% endblock %}

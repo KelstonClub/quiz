@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Your score{% endblock %}
+{% block content %}	
+<h1>You got {{ score}} points!</h1>
+<h3><a href="{{ url_for('choose_quiz') }}">Press here to play another quiz</a></h3>
+{% endblock %}
