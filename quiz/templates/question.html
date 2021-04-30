@@ -1,12 +1,12 @@
 {% extends "base.html" %}	
 {% block title %}Questions{% endblock %}
 {% block content %}
-<h1>{{ question[0] }}</h1>
+<h1 class="title">{{ question[0] }}</h1>
 <ul>
 <form action="" method="POST">
 {% if question[1] == "multiple choice" %}
 {% for answer, _ in answers %}
-	<button name="answer" type="submit" value="{{ answer }}">{{ answer }}</button>
+<button name="answer" type="submit" id="q_{{ loop.index }}" value="{{ answer }}">{{ answer }}</button>
 {% endfor %}
 {% else %}
 	<input type="text" label="Type your answer here">
@@ -14,4 +14,16 @@
 {% endif %}
 </form>
 </ul>
+<script>
+var colours = ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#e63946", "#a8dadc", "#fca311"];
+
+function set_random_colour(id) 
+{
+	document.getElementById(id).style.backgroundColor = colours[Math.floor(Math.random() * colours.length)];
+
+}
+for (var i=1; i-1 != {{ num_answers }}; i++) {
+	set_random_colour("q_" + i);
+}
+</script>
 {% endblock %}

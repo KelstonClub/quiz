@@ -51,7 +51,7 @@ def show_questions(qid):
             answers = db.get_answers(conn, quiestion_id)
             session["answer"] = [ans for ans in answers if ans[1] == "True"][0]
         
-            return render_template("question.html", question=question, answers=answers)
+            return render_template("question.html", question=question, answers=answers, num_answers=len(answers))
     else:
         correct = request.form.get("answer") == session["answer"][0]
         if correct:
