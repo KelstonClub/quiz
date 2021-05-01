@@ -38,6 +38,7 @@ if __name__ == "__main__":
     with open(sys.argv[1], "r") as f:
         csv_file = csv.reader(f)
         db = Database(App)
+        db.run_migrations("schema.sql")
         parse(db, csv_file)
 
     print("Finished inserting data.")
