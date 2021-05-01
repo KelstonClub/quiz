@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, g, session, redirect, url_for
+import random
 import os
 from . import db
 
@@ -49,6 +50,7 @@ def show_questions(qid):
             quiestion_id = session["questions"][session["position"]]
             question = db.get_question(conn, quiestion_id)
             answers = db.get_answers(conn, quiestion_id)
+            random.shuffle(answers)
             session["answer"] = [ans for ans in answers if ans[1] == "True"][0]
         
             return render_template("question.html", question=question, answers=answers, num_answers=len(answers))
@@ -73,6 +75,7 @@ def show_score(qid):
     right = session["correct"]
     wrong = session["quiz_len"] - right
     score = 5*right - wrong # Score is 5 points per right answer minus the wrong ones.
+    if score < 0: score = 0
     session.clear() # Clear session so user can do another quiz.
     return render_template("score.html", score=score)
 
