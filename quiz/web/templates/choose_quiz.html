@@ -2,9 +2,13 @@
 {% block title %}Choose quiz{% endblock %}
 {% block content %}
 <h1>These are the quizzes:</h1>
+{% if quizzes %}
 <ul>
 {% for qid, quiz in quizzes %}
         <li><a href="{{ url_for('show_questions', qid=qid) }}">{{ quiz }}</a></li>
 {% endfor %}
 </ul>
+{% else %}
+<h3>No quizzes found.</h3>
+{% endif %}
 {% endblock %}

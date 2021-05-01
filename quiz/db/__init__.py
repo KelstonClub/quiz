@@ -1,64 +1,37 @@
 import sqlite3
+import os
 
+class DatabasePathNotFound(Exception): pass
+class MigrationPathNotFound(Exception): pass
 
-def make_db(db_name="quizzes.db", schema="db.sql"):
-    conn = sqlite3.connect(db_name, isolation_level=None)
-    
-    cur = conn.cursor()
-    with open(schema, "r") as f:
-        cur.executescript(f.read())
-    cur.close()
-
-    return conn
-
-def query(db, q, ret=None, *args):
-    cur = db.cursor()
-    # print(f"About to run: `{q=}` with `{args=}`")
-    if args:
-        if isinstance(args[0], list) or isinstance(args[0], tuple):
-            args = args[0]
-    
-    cur.execute(q, args)
-    rval = None
-    
-    if ret == "insert":
-        rval = cur.lastrowid
-
-    elif ret == "fetch_one":
-        rval = cur.fetchone()
-
-    elif ret == "fetch_all":
-        rval = cur.fetchall()
+class Database:
+    def __init__(self, app):
+        path = app.config.get("DATABASE_PATH", None)
+        if path is None:
+            raise DatabasePathNotFound("`DATABASE_PATH` was not found.")
         
-    cur.close()
-    return rval
+        self.app = app
+        self.conn = sqlite3.connect(path, isolation_level=None, check_same_thread=False)
+    
+    def run_migrations(self, schema):
+        if not os.path.exists(schema):
+            raise MigrationPathNotFound(f"`{schema}` was not found in your filesystem.")
+
+        with open(schema, 'r') as f:
+            sql = f.read()
+        
+        self.conn.executescript(sql)
 
 
-def get_all_quizzes(db):
-    return query(db, "SELECT id,name FROM quizzes", "fetch_all")
+class Table:
+    def __init__(self, db):
+        self.db = db 
 
+    def query(self, q, args=None):
+        if self.db.app.config.get("DEBUG"):
+            print(f"[DB] Running query: `{q=}` with `{args=}`.")
 
-def get_quiz_questions(db, args):
-    return query(db, "SELECT id FROM questions WHERE quiz_id = ?", "fetch_all", args)
-
-
-def get_question(db, args):
-    return query(db, "SELECT text, type FROM questions WHERE id = ?", "fetch_one", args)
-
-
-def get_answers(db, args):
-    return query(db, "SELECT text, is_right  FROM answers WHERE question_id = ?", "fetch_all", args)
-
-
-def new_quiz(db, args):
-    return query(db, "INSERT INTO quizzes(name) VALUES (?)", "insert", args)
-
-
-def new_question(db, args):
-    return query(db, "INSERT INTO questions(quiz_id, text, type) VALUES (?, ?, ?)", "insert", args)
-
-
-def new_answer(db, args):
-    return query(db, "INSERT INTO answers(question_id, text, is_right) VALUES (?, ?, ?)", "insert", args)
-
-
+        if args:
+            return self.db.conn.execute(q, args)
+        else:
+            return self.db.conn.execute(q)

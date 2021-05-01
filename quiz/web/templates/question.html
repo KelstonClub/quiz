@@ -1,12 +1,12 @@
 {% extends "base.html" %}	
 {% block title %}Questions{% endblock %}
 {% block content %}
-<h1 class="title">{{ question[0] }}</h1>
+<h1 class="title">{{ question.text }}</h1>
 <ul>
 <form action="" method="POST">
-{% if question[1] == "multiple choice" %}
-{% for answer, _ in answers %}
-<button name="answer" type="submit" id="q_{{ loop.index }}" value="{{ answer }}">{{ answer }}</button>
+{% if question.type == "multiple choice" %}
+{% for answer in answers %}
+<button name="answer" type="submit" id="q_{{ loop.index }}" value="{{ answer.text }}">{{ answer.text }}</button>
 {% endfor %}
 {% else %}
 	<input type="text" label="Type your answer here">
