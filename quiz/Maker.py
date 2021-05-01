@@ -24,6 +24,8 @@ class item:
         if False:
             font = pygame.font.SysFont("Rockwell", 25)
             b_text = font.render(self.name, True, (255, 255, 255))
+            x_coord = self.x + 10
+
 
 
 
