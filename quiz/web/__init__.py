@@ -42,10 +42,8 @@ def show_questions(qid):
         return render_template("question.html", question=question, answers=answers, num_answers=len(answers))
     
     else:
-
         right_answer = quiz.questions[session["position"]].get_right_answer()
-        print(right_answer)
-        if request.form.get("answer") == right_answer:
+        if request.form.get("answer") == right_answer.text:
             if not session.get("right"):
                 session["right"] = 1
             else:

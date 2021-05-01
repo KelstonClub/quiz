@@ -57,10 +57,11 @@ class Question(Table):
         return serialized
 
     def get_right_answer(self):
-        answer = self.query("SELECT id, text, is_right FROM answers WHERE question_id = ? AND is_right = True", self.id).fetchall()
+        answer = self.query("SELECT id, text, is_right FROM answers WHERE question_id = ? AND is_right = 'True'", self.id).fetchone()
         if not answer:
             return None
 
+        _id, text, is_right = answer
         return Answer(str(_id), text, is_right, self.db)
 
 
