@@ -2,24 +2,28 @@ from flask import Flask, request, render_template, session, redirect, url_for, a
 import random
 import os
 from quiz.db import Database
-from .models import Quiz
+from .models import Quiz, Question, Answer
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(32)
 app.config["DATABASE_PATH"] = "quizzes.db"
 db = Database(app)
 db.run_migrations("schema.sql")
+# Register tables in database.
+db.register(Quiz)
+db.register(Question)
+db.register(Answer)
 
 
 @app.route("/")
 def choose_quiz():
-    quizzes = Quiz.get_quizzes(db)
+    quizzes = db.get("quiz").all()
     return render_template("choose_quiz.html", quizzes=quizzes)
 
 
 @app.route("/quiz/<qid>/", methods=["GET", "POST"])
 def show_questions(qid):
-    quiz = Quiz.get_quiz_by_id(db, qid)
+    quiz = db.get("quiz").by_id(qid)
     if quiz is None:
         abort(404)
 
@@ -65,7 +69,7 @@ def show_questions(qid):
 
 @app.route("/quiz/<qid>/score/")
 def show_score(qid):
-    quiz = Quiz.get_quiz_by_id(db, qid)
+    quiz = db.get("quiz").by_id(qid)
     if quiz is None:
         abort(404)
 
