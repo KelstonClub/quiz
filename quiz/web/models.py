@@ -1,5 +1,6 @@
 from quiz.db import Table
 
+
 class Quiz(Table):
     def __init__(self, _id, name, db):
         super().__init__(db)
@@ -7,23 +8,25 @@ class Quiz(Table):
         self.id = _id
         self.name = name
 
-
     def get_quizzes(db):
-        return Quiz(None, None, db).query("SELECT id, name FROM quizzes").fetchall()
-
+        return Quiz(None, None,
+                    db).query("SELECT id, name FROM quizzes").fetchall()
 
     def get_quiz_by_id(db, _id):
-        quiz = Quiz(None, None, db).query("SELECT id, name FROM quizzes WHERE id = ?", _id).fetchone()
+        quiz = Quiz(None, None,
+                    db).query("SELECT id, name FROM quizzes WHERE id = ?",
+                              _id).fetchone()
         if not quiz:
             return None
 
         _id, name = quiz
         return Quiz(str(_id), name, db)
 
-    
     @property
     def questions(self):
-        questions = self.query("SELECT id, text, type FROM questions WHERE quiz_id = ?", self.id).fetchall()
+        questions = self.query(
+            "SELECT id, text, type FROM questions WHERE quiz_id = ?",
+            self.id).fetchall()
         if not questions:
             return None
 
@@ -42,10 +45,12 @@ class Question(Table):
         self.id = _id
         self.text = text
         self.type = _type
-   
+
     @property
     def answers(self):
-        answers = self.query("SELECT id, text, is_right FROM answers WHERE question_id = ?", self.id).fetchall()
+        answers = self.query(
+            "SELECT id, text, is_right FROM answers WHERE question_id = ?",
+            self.id).fetchall()
         if not answers:
             return None
 
@@ -57,7 +62,9 @@ class Question(Table):
         return serialized
 
     def get_right_answer(self):
-        answer = self.query("SELECT id, text, is_right FROM answers WHERE question_id = ? AND is_right = 'True'", self.id).fetchone()
+        answer = self.query(
+            "SELECT id, text, is_right FROM answers WHERE question_id = ? AND is_right = 'True'",
+            self.id).fetchone()
         if not answer:
             return None
 

@@ -19,14 +19,16 @@ def get_quiz_questions_and_possible_answers(content):
     if not questions:
         return None
 
-    possible_answers = soup.find_all("div", class_="choices") 
+    possible_answers = soup.find_all("div", class_="choices")
     if not possible_answers:
         return None
 
     data = {}
     for question, answers in zip(questions, possible_answers):
         q = question.find_all("span")[1].text
-        a = [i.text.strip() for i in answers.find_all(class_="mc-active-choice")]
+        a = [
+            i.text.strip() for i in answers.find_all(class_="mc-active-choice")
+        ]
         data[q] = a
 
     return data
@@ -77,16 +79,15 @@ if __name__ == "__main__":
         questions = get_quiz_questions_and_possible_answers(qhtml)
         if not questions:
             continue
-        
+
         ahtml = requests.get(quiz + "/stats").content
         answers = get_quiz_answers(ahtml)
         if not answers:
             continue
-        
+
         data = (qname, questions, answers)
         formatted = into_csv_format(i, data)
 
         print(f"Finished loading quiz {i}")
         with open('jetpunk.csv', 'a') as f:
             f.write(formatted)
-
