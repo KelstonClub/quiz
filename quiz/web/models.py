@@ -2,25 +2,21 @@ from quiz.db import Table
 
 
 class Quiz(Table):
-    def __init__(self, _id, name, db):
-        super().__init__(db)
-
+    def __init__(self, _id, name):
         self.id = _id
         self.name = name
 
-    def get_quizzes(db):
-        return Quiz(None, None,
-                    db).query("SELECT id, name FROM quizzes").fetchall()
+    def get_quizzes(self):
+        return self.query("SELECT id, name FROM quizzes").fetchall()
 
-    def get_quiz_by_id(db, _id):
-        quiz = Quiz(None, None,
-                    db).query("SELECT id, name FROM quizzes WHERE id = ?",
-                              _id).fetchone()
+    def get_quiz_by_id(self, _id):
+        quiz = self.query("SELECT id, name FROM quizzes WHERE id = ?",
+                          _id).fetchone()
         if not quiz:
             return None
 
         _id, name = quiz
-        return Quiz(str(_id), name, db)
+        return Quiz(str(_id), name)
 
     @property
     def questions(self):
@@ -33,15 +29,13 @@ class Quiz(Table):
         serialized = []
         for question in questions:
             _id, text, _type = question
-            serialized.append(Question(str(_id), text, _type, self.db))
+            serialized.append(Question(str(_id), text, _type))
 
         return serialized
 
 
 class Question(Table):
-    def __init__(self, _id, text, _type, db):
-        super().__init__(db)
-
+    def __init__(self, _id, text, _type):
         self.id = _id
         self.text = text
         self.type = _type
@@ -57,7 +51,7 @@ class Question(Table):
         serialized = []
         for answer in answers:
             _id, text, is_right = answer
-            serialized.append(Answer(str(_id), text, is_right, self.db))
+            serialized.append(Answer(str(_id), text, is_right))
 
         return serialized
 
@@ -69,13 +63,11 @@ class Question(Table):
             return None
 
         _id, text, is_right = answer
-        return Answer(str(_id), text, is_right, self.db)
+        return Answer(str(_id), text, is_right)
 
 
 class Answer(Table):
-    def __init__(self, _id, text, is_right, db):
-        super().__init__(db)
-
+    def __init__(self, _id, text, is_right):
         self.id = _id
         self.text = text
         self.is_right = is_right
