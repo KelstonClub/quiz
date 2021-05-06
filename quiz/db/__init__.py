@@ -37,8 +37,8 @@ class Database:
                 "`path` was not passed as an argument to the function.")
 
         self.objects = {}
-        self.debug = debug if not getattr(self, 'debug') else self.debug
-        self.path = path if not getattr(self, 'path') else self.path
+        self.debug = debug if not getattr(self, "debug") else self.debug
+        self.path = path if not getattr(self, "path") else self.path
 
     @property
     def conn(self):
@@ -49,7 +49,7 @@ class Database:
             raise DatabaseMigrationPathNotFound(
                 f"`{schema}` was not found in your filesystem.")
 
-        with open(schema, 'r') as f:
+        with open(schema, "r") as f:
             sql = f.read()
 
         self.conn.executescript(sql)
@@ -64,7 +64,6 @@ class Database:
         ].__add__([self])
 
         self.objects[_class.__name__.lower()] = _class(*default_args)
-        self.objects[_class.__name__.lower()]._db = self
 
     def get(self, object_name):
         return self.objects.get(object_name.lower(), None)
