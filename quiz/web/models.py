@@ -37,8 +37,8 @@ class Quiz(Table):
 
 
 class Question(Table):
-    def __init__(self, _id, text, _type, _db):
-        super().__init__(_db)
+    def __init__(self, _id, text, _type, db):
+        super().__init__(db)
 
         self.id = _id
         self.text = text

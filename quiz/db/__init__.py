@@ -1,4 +1,3 @@
-from collections import defaultdict
 import inspect
 import sqlite3
 import os
