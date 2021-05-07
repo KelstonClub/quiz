@@ -25,6 +25,7 @@ class Quiz(Table):
         questions = self.query(
             "SELECT id, text, type FROM questions WHERE quiz_id = ?",
             self.id).fetchall()
+
         if not questions:
             return None
 
@@ -43,6 +44,17 @@ class Question(Table):
         self.id = _id
         self.text = text
         self.type = _type
+
+    def by_id(self, _id):
+        question = self.query(
+            "SELECT id, text, type FROM questions WHERE id = ?",
+            _id).fetchone()
+
+        if not question:
+            return None
+
+        _id, text, _type = question
+        return Question(str(_id), text, _type, self.db)
 
     @property
     def answers(self):
@@ -70,6 +82,12 @@ class Question(Table):
         _id, text, is_right = answer
         return Answer(str(_id), text, is_right, self.db)
 
+    def __str__(self):
+        return f'{self.text}'
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class Answer(Table):
     def __init__(self, _id, text, is_right, db):
@@ -78,3 +96,9 @@ class Answer(Table):
         self.id = _id
         self.text = text
         self.is_right = is_right
+
+    def __str__(self):
+        return f'{self.text}'
+
+    def __repr__(self):
+        return self.__str__()
