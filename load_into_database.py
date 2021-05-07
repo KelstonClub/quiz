@@ -32,10 +32,6 @@ def parse(db, csv_file):
             ids[token].append(rval)
 
 
-class App:
-    config = {"DATABASE_PATH": "quizzes.db"}
-
-
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print(f"Usage: {sys.argv[0]} <csv file>")
@@ -43,7 +39,7 @@ if __name__ == "__main__":
 
     with open(sys.argv[1], "r") as f:
         csv_file = csv.reader(f)
-        db = Database(App)
+        db = Database(path="quizzes.db")
         db.run_migrations("schema.sql")
         parse(db, csv_file)
 

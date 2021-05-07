@@ -7,10 +7,6 @@ class DatabasePathNotDefined(Exception):
     pass
 
 
-class DatabasePathNotFound(Exception):
-    pass
-
-
 class DatabaseMigrationPathNotFound(Exception):
     pass
 
@@ -28,17 +24,19 @@ class Database:
         if app:
             self.path = app.config.get("DATABASE_PATH", None)
             if self.path is None:
-                raise DatabasePathNotFound("`DATABASE_PATH` was not found.")
+                raise DatabasePathNotDefined("`DATABASE_PATH` was not found.")
 
             self.debug = app.config.get("DEBUG", False)
 
-        if not app and not path:
-            raise DatabasePathNotDefined(
-                "`path` was not passed as an argument to the function.")
+        else:
+            if not path:
+                raise DatabasePathNotDefined(
+                    "`path` was not passed as an argument to the function.")
+
+            self.debug = debug
+            self.path = path
 
         self.objects = {}
-        self.debug = debug if not getattr(self, "debug") else self.debug
-        self.path = path if not getattr(self, "path") else self.path
 
     @property
     def conn(self):

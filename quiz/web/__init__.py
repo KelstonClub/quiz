@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, session, redirect, url_for, a
 import random
 import os
 from quiz.db import Database
-from .models import Quiz, Question, Answer
+from quiz.db.models import Quiz, Question, Answer
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(32)
