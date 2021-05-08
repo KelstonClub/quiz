@@ -19,6 +19,10 @@ class DatabaseTableWasNotInitedProperly(Exception):
     pass
 
 
+class DatabaseTableNotFound(Exception):
+    pass
+
+
 class Database:
     def __init__(self, app=None, path="", debug=False):
         if app:
@@ -64,22 +68,31 @@ class Database:
         self.objects[_class.__name__.lower()] = _class(*default_args)
 
     def get(self, object_name):
-        return self.objects.get(object_name.lower(), None)
+        obj = self.objects.get(object_name.lower(), None)
+        if not obj:
+            raise DatabaseTableNotFound(
+                "You are trying to access a table which has not been registered."
+            )
+
+        return obj
 
 
 class Table:
     def __init__(self, db):
         self.db = db
 
-    @property
-    def debug(self):
-        return self.db.debug
-
-    def query(self, q, args=None):
+    def _check(self):
         if not self.db:
             raise DatabaseTableWasNotInitedProperly(
                 "Please register the Table before trying to use it.")
 
+    @property
+    def debug(self):
+        self._check()
+        return self.db.debug
+
+    def query(self, q, args=None):
+        self._check()
         if self.debug:
             print(f"[DB] Running query: `{q=}` with `{args=}`.")
 
